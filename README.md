@@ -8,24 +8,12 @@ Basit, hızlı ve özelleştirilebilir.
 
 ---
 
-## ✨ Features | Özellikler
-
-### 🔔 Custom Notifications
-Send clean notifications anywhere in your script.
-
-### 🔔 Özel Bildirim Sistemi
-Script içinde istediğin yerde temiz bildirim gönder.
-
----
-
 ### 🎨 Fully Customizable
 You can edit:
 
 - Title
 - Description
 - Colors
-- Icons
-- Position
 - Duration
 
 ### 🎨 Tam Özelleştirilebilir
@@ -35,8 +23,6 @@ Değiştirilebilir:
 - Başlık
 - Açıklama
 - Renkler
-- İkonlar
-- Ekrandaki konum
 - Bildirim süresi
 
 ---
