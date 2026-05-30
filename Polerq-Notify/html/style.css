@@ -1,0 +1,287 @@
+:root {
+  --bg-base: rgba(13, 24, 30, 0.78);
+  --border: rgba(255, 255, 255, 0.10);
+  --text: #f4fbff;
+  --muted: rgba(244, 251, 255, 0.74);
+
+  --success: #2fe6a6;
+  --warning: #ffd54a;
+  --error: #ff5d6c;
+  --info: #43a6ff;
+
+  --radius: 20px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Inter, Arial, Helvetica, sans-serif;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: transparent;
+}
+
+#notification-container {
+  position: absolute;
+  right: 1.2vw;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 9999;
+  pointer-events: none;
+  align-items: flex-end;
+}
+
+.notification {
+  width: 370px;
+  max-width: 430px;
+  transform: translateX(140%) scale(0.96);
+  opacity: 0;
+  animation: enterNotify 0.32s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  will-change: transform, opacity;
+}
+
+.notification.hide {
+  animation: exitNotify 0.24s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+.notification-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  padding: 14px 16px 12px 16px;
+  border: 1px solid var(--border);
+  box-shadow:
+    0 16px 38px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  animation: floatSide 1s ease-in-out infinite alternate;
+}
+
+.notification-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.10), transparent);
+  transform: translateX(-120%);
+  animation: shine 3.2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.notification-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at top right, rgba(255,255,255,0.10), transparent 38%),
+    radial-gradient(circle at bottom left, rgba(255,255,255,0.06), transparent 34%);
+}
+
+.notification.success .notification-card {
+  background:
+    linear-gradient(135deg, rgba(47, 230, 166, 0.34), rgba(47, 230, 166, 0.14)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+  box-shadow:
+    0 0 18px rgba(47, 230, 166, 0.22),
+    0 16px 38px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  animation: floatSide 1s ease-in-out infinite alternate, pulseSuccess 1.2s ease-in-out infinite;
+}
+
+.notification.warning .notification-card {
+  background:
+    linear-gradient(135deg, rgba(255, 213, 74, 0.34), rgba(255, 213, 74, 0.14)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+  box-shadow:
+    0 0 18px rgba(255, 213, 74, 0.20),
+    0 16px 38px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  animation: floatSide 1s ease-in-out infinite alternate, pulseWarning 1.2s ease-in-out infinite;
+}
+
+.notification.error .notification-card {
+  background:
+    linear-gradient(135deg, rgba(255, 93, 108, 0.34), rgba(255, 93, 108, 0.14)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+  box-shadow:
+    0 0 18px rgba(255, 93, 108, 0.22),
+    0 16px 38px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  animation: floatSide 1s ease-in-out infinite alternate, pulseError 1.2s ease-in-out infinite;
+}
+
+.notification.info .notification-card {
+  background:
+    linear-gradient(135deg, rgba(67, 166, 255, 0.30), rgba(47, 230, 166, 0.12)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+  box-shadow:
+    0 0 18px rgba(67, 166, 255, 0.18),
+    0 16px 38px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  animation: floatSide 1s ease-in-out infinite alternate, pulseInfo 1.2s ease-in-out infinite;
+}
+
+.header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 7px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.icon-wrap {
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(10px);
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+  display: block;
+  fill: currentColor;
+}
+
+.notification.success .icon-wrap { color: var(--success); }
+.notification.warning .icon-wrap { color: var(--warning); }
+.notification.error .icon-wrap { color: var(--error); }
+.notification.info .icon-wrap { color: var(--info); }
+
+.title {
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.type {
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+}
+
+.message {
+  position: relative;
+  z-index: 1;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+  word-wrap: break-word;
+  padding-right: 4px;
+}
+
+.progress {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 4px;
+  margin-top: 12px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.progress-bar {
+  height: 100%;
+  width: 100%;
+  transform-origin: left;
+  animation: shrink linear forwards;
+}
+
+.notification.success .progress-bar { background: linear-gradient(90deg, #42f5ae, #24d28a); }
+.notification.warning .progress-bar { background: linear-gradient(90deg, #ffe37a, #ffd54a); }
+.notification.error .progress-bar { background: linear-gradient(90deg, #ff8a98, #ff5d6c); }
+.notification.info .progress-bar { background: linear-gradient(90deg, #78c1ff, #43a6ff); }
+
+@keyframes shrink {
+  from { transform: scaleX(1); }
+  to   { transform: scaleX(0); }
+}
+
+@keyframes floatSide {
+  from { transform: translateX(-8px); }
+  to   { transform: translateX(8px); }
+}
+
+@keyframes shine {
+  0%   { transform: translateX(-120%); }
+  55%  { transform: translateX(120%); }
+  100% { transform: translateX(120%); }
+}
+
+@keyframes pulseSuccess {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.12); }
+}
+
+@keyframes pulseWarning {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.12); }
+}
+
+@keyframes pulseError {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.12); }
+}
+
+@keyframes pulseInfo {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.12); }
+}
+
+@keyframes enterNotify {
+  from {
+    transform: translateX(140%) scale(0.96);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes exitNotify {
+  from {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(140%) scale(0.96);
+    opacity: 0;
+  }
+}
